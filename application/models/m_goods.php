@@ -19,4 +19,8 @@ class M_goods extends CI_Model {
 	public function add_good($data,$table){
 		$this->db->insert($table,$data); 
 	}
+
+	public function reducestock($id, $qty){
+		return $this->db->query("update goods set stock = stock - $qty WHERE code = $id");
+	}
 }

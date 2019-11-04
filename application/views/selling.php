@@ -1,15 +1,43 @@
+
 <div class="container-fluid">
-    <div class="col-md-4"  id="insert">
-        <a type="button" href="<?php echo base_url();?>index.php/selling/show" class="btn btn-primary" type="submit" value="submit">Cek Status</a>
-        <a type="button" href="<?php echo base_url();?>index.php/sell/insert" class="btn btn-primary insert_selling" type="submit" value="submit">Record</a>
+    <div class="row">
+        <table class="table table-borderless">
+            <!-- <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Nama</th>
+                    <th>No HP</th>
+                    <th>Kota Tujuan</th>
+                    <th>Alamat</th>
+                    <th>Kode Pos</th> 
+                    <th>Total</th> 
+                </tr>
+            </thead> -->
+            <tbody>
+            
+            <?php foreach ($pembeli as $key => $pembeliItem){?>
+            <tr>
+            <td><?php echo $key?></td>
+            <td><?php echo $pembeliItem?></td>
+            </tr>    
+            <?php }?>
+            <tr>
+            <td>Ongkos Kirim</td>
+            <td><?php echo $ongkir?></td>
+            </tr>
+            <tr>
+            <td>Total</td>
+            <td><?php echo $ongkir+$pembeli['total']?></td>
+            </tr>                                                                             
+            </tbody>           
+        </table>   
+        <form action="<?php echo site_url('selling/checkout_submit') ?>" method="post">
+        <?php foreach ($pembeli as $key => $pembeliItem){?>
+            <input type="hidden" name="<?php echo $key?>" value='<?php echo $pembeliItem ?>'>
+        <?php }?>
+        <input type="hidden" name="total" value='<?php echo $ongkir+$pembeli['total']?>'>
+        <button type="submit" class='btn btn-primary'>Check Out</button>
+        
+        </form>
     </div>
-    
 </div>
-
-
-
-
-
-<script type="text/javascript">
-    $('#insert').load("<?php echo base_url();?>index.php/selling/insert");
-</script>

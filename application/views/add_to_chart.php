@@ -21,9 +21,12 @@
             
     </table>
 
-    <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#buyer-form">
+    <a type="button" href="<?php echo base_url();?>index.php/sell/insert" class="btn btn-primary insert_selling" type="submit" value="submit">Checkout</a>
+
+    
+    <!-- <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#buyer-form">
         Checkout
-    </button>
+    </button> -->
 
     </div>
 </div>
@@ -95,6 +98,14 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Kota Tujuan</label>
+                        <select name="kotatujuan" id="kotatujuan">
+                        <?php foreach ($kota as $item){?>
+                        <option value="<?php echo $item->city_id ?>"><?php echo $item->city_name ?> </option>
+                        <?php } ?>
+                        </select>
                     </div>
                     
                 </form>

@@ -1,6 +1,15 @@
 <?php
 
 class Selling extends CI_Controller{
+    public function template($load_data)
+	{
+		$data['content'] = $this->load->view('templates/header');
+		$data['content'] = $this->load->view('templates/footer');
+
+		$data['content'] = $this->load->view('templates/template',$data);
+		return $this->load->view('templates/template',$load_data);
+    }
+
     public function insert(){ //fungsi Add To Cart
         // echo "insert";
         // $data = array(
@@ -40,18 +49,55 @@ class Selling extends CI_Controller{
         redirect('selling/show');
     }
 
-    public function receipt(){
+    public function checkout_submit(){
         $data["pembeli"]= array(
-            "nama"=>$this->input->post("nama"),
+            "name"=>$this->input->post("nama"),
+            "nohp"=>$this->input->post("nohp"),
+            "address"=>$this->input->post("alamat"),
+            "city"=>$this->input->post("kota"),
+            "zipcode"=>$this->input->post("kodepos"),
+            "total"=>$this->input->post('total'),
+        
+        );
+
+        $no_penjualan=$this->m_selling->insert($data["pembeli"]);
+        echo json_encode($data["pembeli"]); //karean data pembeli iu objek php maka harus dijadiin json
+
+        $data["jual"] = array(
+            "code"=>$no_penjualan,
+
+        );
+
+        foreach ($this->cart->contents() as $key => $cart) {
+            $data["jual"]["code_good"]=$cart["id"];
+            $data["jual"]["items"]=$cart["qty"];
+            $data["jual"]["total_price"]=$cart["price"];
+
+            $this->m_sell->insert($data["jual"]);
+            $this->m_goods->reducestock($data["jual"]["code_good"], $data["jual"]["items"]);
+        }
+
+        $this->cart->destroy();
+
+        redirect("Dashboard/index");
+    }
+
+    public function displayReceipt(){
+        $data["pembeli"]= array(
+            "nama"=>$this->input->post("name"),
             "nohp"=>$this->input->post("nohp"),
             "alamat"=>$this->input->post("alamat"),
             "kota"=>$this->input->post("kota"),
             "kodepos"=>$this->input->post("kodepos"),
-            "total"=>$this->cart->total()
+            "total"=>$this->cart->total(),
+        
         );
 
+
         $idkota = $this->input->post('kotatujuan');
+
         $curl = curl_init();
+
         curl_setopt_array($curl, array(
             CURLOPT_URL => "https://api.rajaongkir.com/starter/cost",
             CURLOPT_RETURNTRANSFER => true,
@@ -79,12 +125,12 @@ class Selling extends CI_Controller{
             $responseobject = json_decode($response);
                 $data['ongkir'] = $responseobject->rajaongkir->results[0]->costs[0]->cost[0]->value;
                 
-                $data1['content'] = $this->load->view('v_receipt',$data,true);
-                $this->load->view('v_template',$data1);
-            }
+                // $data1['content'] = $this->load->view('v_receipt',$data,true);
+                // $this->load->view('v_template',$data1);
 
-		// $this->load->view('templates/header');
-		// $this->load->view('set_status', $data);
-		// $this->load->view('templates/footer');
+                $data_view['content'] = $this->load->view('selling', $data, true);
+                $data_view1['content_'] = $this->template($data_view);
+                $this->load->view('selling',$data_view1);
+            }
     }
 }
