@@ -20,12 +20,12 @@
   <li class="nav-item active">
     <a class="nav-link" href="<?php echo base_url('admin/Input_good')?>">
       <i class="fas fa-database"></i>
-      <span>Goods</span>
+      <span>Export</span>
     </a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="<?php echo base_url('admin/Invoices')?>">
       <i class="fas fa-file-invoice"></i>
-      <span>Invoices</span></a>
+      <span>Import</span></a>
   </li>
 </ul>

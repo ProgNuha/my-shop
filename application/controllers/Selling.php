@@ -57,6 +57,7 @@ class Selling extends CI_Controller{
             "city"=>$this->input->post("kota"),
             "zipcode"=>$this->input->post("kodepos"),
             "total"=>$this->input->post('total'),
+            "status"=>"Belum bayar"
         
         );
 

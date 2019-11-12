@@ -11,6 +11,6 @@ class M_selling extends CI_Model{
     }
     
     public function setStatus($code, $status){
-        $this->db->query("update selling set status = '$status' WHERE code = $code ");
+        $this->db->query("update selling set status = '$status' WHERE code = '$code' ");
     }
 }
